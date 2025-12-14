@@ -53,7 +53,7 @@ function App() {
                 {filteredRestaurants.length === 0 ? '선택 가능한 식당이 없습니다' : isDialogOpen ? '추첨 중...': '메뉴 추첨하기!'}
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="min-h-[300px]">
               <DialogHeader hidden />
               <DialogDescription>
                 <RandomPicker

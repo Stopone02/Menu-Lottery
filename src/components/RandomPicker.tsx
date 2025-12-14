@@ -80,22 +80,23 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
   return (
     <div className="w-full max-w-[600px] flex flex-col gap-8 items-center">
       <h2 className="text-2xl mb-4 h-8 font-semibold">오늘의 메뉴는...</h2>
-      {(isSpinning || selectedRestaurant) && (
-        <div className="w-full max-w-[300px]">
-          <div
-            className={cn('px-1 py-4 bg-gradient-to-br from-blue-500/20 to-blue-400/20 rounded-xl border-4 border-blue-500 shadow-[0_8px_24px_rgba(100,108,255,0.3)] w-full justify-center overflow-hidden',
-              isSpinning ? 'animate-pulse' : ''
-            )}
-          >
-            <p className="w-full text-xl mb-2 text-blue-500 font-semibold text-center truncate px-2">
-              {isSpinning ? displayRestaurant?.name : selectedRestaurant!.name}
-            </p>
-            <p className="w-full text-lg text-gray-500 text-center">
-              {isSpinning ? (displayRestaurant && CATEGORY_LABELS[displayRestaurant.category]) : CATEGORY_LABELS[selectedRestaurant!.category]}
-            </p>
-          </div>
+      <div
+        className={cn(
+          "w-full max-w-[300px] h-[120px] transition-opacity duration-200",
+          (isSpinning || selectedRestaurant) ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+      >
+        <div
+          className='h-full px-1 py-4 bg-gradient-to-br from-blue-500/20 to-blue-400/20 rounded-xl border-4 border-blue-500 shadow-[0_8px_24px_rgba(100,108,255,0.3)] w-full flex flex-col justify-center overflow-hidden'
+        >
+          <p className="w-full text-xl mb-2 text-blue-500 font-semibold text-center truncate px-2 leading-tight">
+            {isSpinning ? displayRestaurant?.name : selectedRestaurant?.name}
+          </p>
+          <p className="w-full text-lg text-gray-500 text-center leading-tight">
+            {isSpinning ? (displayRestaurant && CATEGORY_LABELS[displayRestaurant.category]) : (selectedRestaurant && CATEGORY_LABELS[selectedRestaurant.category])}
+          </p>
         </div>
-      )}
+      </div>
       <Button
         onClick={handlePick}
         disabled={isSpinning}

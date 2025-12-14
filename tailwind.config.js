@@ -53,8 +53,8 @@ module.exports = {
           '100%': { transform: 'translateY(100vh) rotate(720deg)', opacity: '0' },
         },
         pulse: {
-          '0%, 100%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.05)' },
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' },
         },
         fadeIn: {
           from: { opacity: '0', transform: 'translateY(20px)' },
