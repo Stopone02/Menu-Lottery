@@ -11,15 +11,11 @@ interface store {
   categoryFilters: CategoryFilterOption;
   mealTicketFilters: MealTicketFilterOption;
 
-  isSpinning: boolean;
-
   addRestaurant: (data: Omit<Restaurant, 'id'>) => void;
   removeRestaurant: (id: number) => void;
   toggleEditMode: () => void;
   setCategoryFilter: (category: keyof CategoryFilterOption, checked: boolean) => void;
   setMealTicketFilter: (mealTicket: keyof MealTicketFilterOption, checked: boolean) => void;
-
-  setIsSpinning: (isSpinning: boolean) => void;
 }
 
 const useCustomStore = create<store>((set) => ({
@@ -40,8 +36,6 @@ const useCustomStore = create<store>((set) => ({
     });
     return filters;
   })(),
-
-  isSpinning: false,
 
   addRestaurant: (data) => 
     set((state) => ({
@@ -70,15 +64,13 @@ const useCustomStore = create<store>((set) => ({
       }
     })),
 
-  setMealTicketFilter: (mealTicket, checked) => 
+  setMealTicketFilter: (mealTicket, checked) =>
     set((state) => ({
       mealTicketFilters: {
         ...state.mealTicketFilters,
         [mealTicket]: checked
       }
     })),
-
-  setIsSpinning: (isSpinning) => set({ isSpinning }),
 }));
 
 export default useCustomStore;

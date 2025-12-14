@@ -18,7 +18,6 @@ function App() {
   const restaurants = useCustomStore((state) => state.restaurants);
   const categoryFilters = useCustomStore((state) => state.categoryFilters);
   const mealTicketFilters = useCustomStore((state) => state.mealTicketFilters);
-  const isSpinning = useCustomStore((state) => state.isSpinning);
 
   // 필터링된 식당 목록
   const filteredRestaurants = useMemo(() => {
@@ -49,9 +48,9 @@ function App() {
             <DialogTrigger asChild>
               <Button
                 className="text-xl px-8 py-6 bg-blue-500 hover:bg-blue-600"
-                disabled={filteredRestaurants.length === 0 || isSpinning}
+                disabled={filteredRestaurants.length === 0}
               >
-                {filteredRestaurants.length === 0 ? '선택 가능한 식당이 없습니다' : '메뉴 추첨하기!'}
+                {filteredRestaurants.length === 0 ? '선택 가능한 식당이 없습니다' : isDialogOpen ? '추첨 중...': '메뉴 추첨하기!'}
               </Button>
             </DialogTrigger>
             <DialogContent>

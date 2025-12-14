@@ -2,7 +2,6 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 
 import type { Restaurant } from '@/common/types/Restaurant';
 import { CATEGORY_LABELS } from '@/common/const';
-import useCustomStore from '@/zustand/store';
 import { cn } from '@/common/util';
 import { Button } from '@/components/Button';
 
@@ -14,11 +13,7 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
   // state.
   const [displayRestaurant, setDisplayRestaurant] = useState<Restaurant | null>(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-
-  const isSpinning = useCustomStore((state) => state.isSpinning);
-
-  // set method.
-  const setIsSpinning = useCustomStore((state) => state.setIsSpinning);
+  const [isSpinning, setIsSpinning] = useState(false);
 
   // ref.
   const resultRef = useRef<HTMLDivElement>(null);
