@@ -1,4 +1,4 @@
-import { CATEGORY_FILTER_TYPE, type MEALTICKT_FILTER_TYPE } from "../common/const";
+import { CATEGORY_FILTER_TYPE, type MEALTICKT_FILTER_TYPE } from "@/common/const";
 
 export type MealticketFilterType = typeof MEALTICKT_FILTER_TYPE [keyof typeof MEALTICKT_FILTER_TYPE];
 

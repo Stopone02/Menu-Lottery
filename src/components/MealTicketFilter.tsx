@@ -1,25 +1,37 @@
-import type { MealTicketFilterOption, MealticketFilterType } from '../types/Restaurant';
+import { useMemo } from 'react';
 
-interface MealTicketFilterProps {
-  mealTickets: MealticketFilterType[];
-  filters: MealTicketFilterOption;
-  onFilterChange: (mealTicket: string, checked: boolean) => void;
-}
+import useCustomStore from '@/zustand/store';
+import { Checkbox } from '@/components/Checkbox';
+import { Label } from '@/components/Label';
 
-export default function MealTicketFilter({ mealTickets, filters, onFilterChange }: MealTicketFilterProps) {
+export default function MealTicketFilter() {
+  // state.
+  const restaurants = useCustomStore((state) => state.restaurants);
+  const filters = useCustomStore((state) => state.mealTicketFilters);
+
+  // set method.
+  const setFilters = useCustomStore((state) => state.setMealTicketFilter);
+
+  const mealTickets = useMemo(() => {
+      const uniqueMealTickets = new Set(restaurants.map(r => r.mealTicket));
+      return Array.from(uniqueMealTickets);
+    }, [restaurants]);
+
   return (
-    <div className="meal-ticket-filter">
-      <h3>식권 사용 가능 여부</h3>
-      <div className="filter-options">
+    <div className="w-full max-w-[600px] p-6 border-2 border-dashed border-gray-400 rounded-lg bg-gray-50">
+      <h3 className="mb-4 text-xl font-semibold">식권 대장</h3>
+      <div className="flex flex-col gap-4 justify-center">
         {mealTickets.map((mealTicket) => (
-          <label key={mealTicket} className="filter-option">
-            <input
-              type="checkbox"
+          <div className='flex items-start gap-3' key={mealTicket}>
+            <Checkbox
               checked={filters[mealTicket]}
-              onChange={(e) => onFilterChange(mealTicket, e.target.checked)}
+              className="cursor-pointer w-[18px] h-[18px]"
+              onCheckedChange={(checked) => {
+                setFilters(mealTicket, checked === true);
+              }}
             />
-            <span>{mealTicket === 'AVAILABLE' ? '사용 가능' : '사용 불가'}</span>
-          </label>
+            <Label htmlFor='toggle'>{mealTicket === 'AVAILABLE' ? '사용 가능' : '사용 불가'}</Label>
+          </div>
         ))}
       </div>
     </div>
