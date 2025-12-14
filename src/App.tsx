@@ -30,7 +30,11 @@ function App() {
   return (
     <ScrollArea className='h-screen w-full'>
       <div className="flex flex-col items-center gap-3 py-8 font-pretendard px-[20px]">
-        <h1 className="text-4xl font-bold mb-4">메뉴 추첨기</h1>
+        <h1 className="text-4xl font-bold mb-4 flex items-center gap-3">
+          <img src="/Menu-Lottery/favicon.ico" alt="icon" className="w-8 h-8" />
+          메뉴 추첨기
+          <img src="/Menu-Lottery/favicon.ico" alt="icon" className="w-8 h-8" />
+        </h1>
 
         <FilterContent />
 

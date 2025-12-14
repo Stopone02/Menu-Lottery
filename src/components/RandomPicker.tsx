@@ -89,7 +89,7 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
 
   return (
     <div className="w-full max-w-[600px] flex flex-col gap-8 items-center">
-      <h2 className="text-2xl mb-4 h-8">오늘의 메뉴는...</h2>
+      <h2 className="text-2xl mb-4 h-8 font-semibold">오늘의 메뉴는...</h2>
       {(isSpinning || selectedRestaurant) && (
         <div className="animate-fadeIn w-full" ref={resultRef}>
           <div
