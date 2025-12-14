@@ -40,24 +40,26 @@ function App() {
 
         {editMode && (<RestaurantForm />)}
 
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button
-              className="text-xl px-8 py-6 bg-blue-500 hover:bg-blue-600"
-              disabled={filteredRestaurants.length === 0 || isSpinning}
-            >
-              {filteredRestaurants.length === 0 ? '선택 가능한 식당이 없습니다' : '메뉴 추첨하기!'}
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader hidden />
-            <DialogDescription>
-              <RandomPicker
-                restaurants={filteredRestaurants}
-              />
-            </DialogDescription>
-          </DialogContent>
-        </Dialog>
+        {!editMode && (
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button
+                className="text-xl px-8 py-6 bg-blue-500 hover:bg-blue-600"
+                disabled={filteredRestaurants.length === 0 || isSpinning}
+              >
+                {filteredRestaurants.length === 0 ? '선택 가능한 식당이 없습니다' : '메뉴 추첨하기!'}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader hidden />
+              <DialogDescription>
+                <RandomPicker
+                  restaurants={filteredRestaurants}
+                />
+              </DialogDescription>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
     </ScrollArea>
   )
