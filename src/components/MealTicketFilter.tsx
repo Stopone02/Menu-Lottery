@@ -30,7 +30,7 @@ export default function MealTicketFilter() {
                 setFilters(mealTicket, checked === true);
               }}
             />
-            <Label htmlFor='toggle'>{mealTicket === 'AVAILABLE' ? '사용 가능' : '사용 불가'}</Label>
+            <Label className="flex-shrink-0" htmlFor='toggle'>{mealTicket === 'AVAILABLE' ? '사용 가능' : '사용 불가'}</Label>
           </div>
         ))}
       </div>

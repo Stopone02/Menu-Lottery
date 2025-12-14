@@ -28,8 +28,8 @@ function App() {
   }, [restaurants, categoryFilters, mealTicketFilters]);
 
   return (
-    <ScrollArea className='h-screen'>
-      <div className="flex flex-col items-center gap-8 py-8 font-pretendard">
+    <ScrollArea className='h-screen w-full'>
+      <div className="flex flex-col items-center gap-3 py-8 font-pretendard px-[20px]">
         <h1 className="text-4xl font-bold mb-4">메뉴 추첨기</h1>
 
         <FilterContent />
@@ -43,7 +43,7 @@ function App() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button
-              className="text-xl px-8 py-6 bg-blue-500"
+              className="text-xl px-8 py-6 bg-blue-500 hover:bg-blue-600"
               disabled={filteredRestaurants.length === 0 || isSpinning}
             >
               {filteredRestaurants.length === 0 ? '선택 가능한 식당이 없습니다' : '메뉴 추첨하기!'}
