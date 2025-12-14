@@ -26,6 +26,9 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
   const handlePick = useCallback(() => {
     if (restaurants.length === 0) return;
 
+    // 즉시 첫 번째 식당을 표시하여 깜빡임 방지
+    const initialRestaurant = restaurants[Math.floor(Math.random() * restaurants.length)];
+    setDisplayRestaurant(initialRestaurant);
     setIsSpinning(true);
     let counter = 0;
     const spinDuration = 2000; // 2초
@@ -91,7 +94,7 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
     <div className="w-full max-w-[600px] flex flex-col gap-8 items-center">
       <h2 className="text-2xl mb-4 h-8 font-semibold">오늘의 메뉴는...</h2>
       {(isSpinning || selectedRestaurant) && (
-        <div className="animate-fadeIn w-full max-w-[300px]" ref={resultRef}>
+        <div className="w-full max-w-[300px]" ref={resultRef}>
           <div
             className={cn('px-1 py-4 bg-gradient-to-br from-blue-500/20 to-blue-400/20 rounded-xl border-4 border-blue-500 shadow-[0_8px_24px_rgba(100,108,255,0.3)] w-full justify-center overflow-hidden',
               isSpinning ? 'animate-pulse' : ''
