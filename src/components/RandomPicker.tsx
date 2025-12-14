@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import type { Restaurant } from '@/common/types/Restaurant';
 import { CATEGORY_LABELS } from '@/common/const';
@@ -14,9 +14,6 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
   const [displayRestaurant, setDisplayRestaurant] = useState<Restaurant | null>(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
-
-  // ref.
-  const resultRef = useRef<HTMLDivElement>(null);
 
   const handlePick = useCallback(() => {
     if (restaurants.length === 0) return;
@@ -43,7 +40,7 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
         setSelectedRestaurant(restaurants[finalIndex]);
       }
     }, intervalTime);
-  }, [restaurants, setIsSpinning]);
+  }, [restaurants]);
 
   // Dialog가 열릴 때 자동으로 추첨 시작
   useEffect(() => {
@@ -53,12 +50,7 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
   }, [handlePick, restaurants.length]);
 
   useEffect(() => {
-    if (selectedRestaurant && resultRef.current) {
-      // 스크롤 애니메이션
-      setTimeout(() => {
-        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-
+    if (selectedRestaurant) {
       // 폭죽 효과
       createConfetti();
     }
@@ -89,7 +81,7 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
     <div className="w-full max-w-[600px] flex flex-col gap-8 items-center">
       <h2 className="text-2xl mb-4 h-8 font-semibold">오늘의 메뉴는...</h2>
       {(isSpinning || selectedRestaurant) && (
-        <div className="w-full max-w-[300px]" ref={resultRef}>
+        <div className="w-full max-w-[300px]">
           <div
             className={cn('px-1 py-4 bg-gradient-to-br from-blue-500/20 to-blue-400/20 rounded-xl border-4 border-blue-500 shadow-[0_8px_24px_rgba(100,108,255,0.3)] w-full justify-center overflow-hidden',
               isSpinning ? 'animate-pulse' : ''
