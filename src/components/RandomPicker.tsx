@@ -106,15 +106,13 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
           </div>
         </div>
       )}
-      {selectedRestaurant && (
-        <Button
-          onClick={handlePick}
-          disabled={isSpinning}
-          className="px-6 py-3 text-xl bg-blue-500"
-        >
-          {isSpinning ? '추첨 중...' : '재추첨'}
-        </Button>
-      )}
+      <Button
+        onClick={handlePick}
+        disabled={isSpinning}
+        className="px-6 py-3 text-xl bg-blue-500 hover:bg-blue-600"
+      >
+        {isSpinning ? '추첨 중...' : '재추첨'}
+      </Button>
     </div>
   );
 }
