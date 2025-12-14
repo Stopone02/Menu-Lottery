@@ -91,13 +91,13 @@ export default function RandomPicker({ restaurants }: RandomPickerProps) {
     <div className="w-full max-w-[600px] flex flex-col gap-8 items-center">
       <h2 className="text-2xl mb-4 h-8 font-semibold">오늘의 메뉴는...</h2>
       {(isSpinning || selectedRestaurant) && (
-        <div className="animate-fadeIn w-full" ref={resultRef}>
+        <div className="animate-fadeIn w-full max-w-[300px]" ref={resultRef}>
           <div
-            className={cn('p-8 bg-gradient-to-br from-blue-500/20 to-blue-400/20 rounded-xl border-4 border-blue-500 shadow-[0_8px_24px_rgba(100,108,255,0.3)] w-full justify-center',
+            className={cn('px-1 py-4 bg-gradient-to-br from-blue-500/20 to-blue-400/20 rounded-xl border-4 border-blue-500 shadow-[0_8px_24px_rgba(100,108,255,0.3)] w-full justify-center overflow-hidden',
               isSpinning ? 'animate-pulse' : ''
             )}
           >
-            <p className="w-full text-3xl mb-2 text-blue-500 font-bold text-center break-keep">
+            <p className="w-full text-xl mb-2 text-blue-500 font-semibold text-center truncate px-2">
               {isSpinning ? displayRestaurant?.name : selectedRestaurant!.name}
             </p>
             <p className="w-full text-lg text-gray-500 text-center">
