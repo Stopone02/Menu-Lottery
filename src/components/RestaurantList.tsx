@@ -20,7 +20,7 @@ export default function RestaurantList({ restaurants }: RestaurantListProps) {
   const toggleEditMode = useCustomStore((state) => state.toggleEditMode);
 
   return (
-    <div className="w-full max-w-[600px] p-6 border-2 border-dashed border-gray-400 rounded-lg bg-cyan-400/10 bg-gray-50">
+    <div className="w-full max-w-[600px] p-6 border-2 border-dashed border-gray-400 rounded-lg bg-gray-50">
       <div className="flex justify-between items-center mb-4 gap-4">
         <h3 className="m-0 text-xl font-semibold">식당 목록 ({restaurants.length}개)</h3>
         <Button
@@ -32,8 +32,8 @@ export default function RestaurantList({ restaurants }: RestaurantListProps) {
           {editMode ? '편집 종료' : '편집'}
         </Button>
       </div>
-      <ScrollArea key="restaurant-list">
-        <ul className="flex flex-col gap-1 list-none p-0 m-0 max-h-[200px] pr-2">
+      <ScrollArea className="h-[200px]">
+        <ul className="flex flex-col gap-1 list-none p-0 m-0 pr-2">
           {restaurants.map((restaurant) => (
             <li
               key={restaurant.id}
