@@ -1,41 +1,63 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 
-import RestaurantList from '@/components/RestaurantList'
-import RandomPicker from '@/components/RandomPicker'
-import RestaurantForm from '@/components/RestaurantForm'
-import { ScrollArea } from '@/components/ScrollArea'
+import RestaurantList from '@/widgets/RestaurantList'
+import RandomPicker from '@/widgets/RandomPicker'
+import RestaurantForm from '@/widgets/RestaurantForm'
+import { ScrollArea } from '@/common/components/ScrollArea'
 import { FilterContent } from '@/widgets/FilterContent'
 import useCustomStore from '@/zustand/store'
-import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/Dialog'
-import { DialogTrigger } from '@radix-ui/react-dialog'
-import { Button } from '@/components/Button'
+import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogHeader } from '@/common/components/Dialog'
+import { Button } from '@/common/components/Button'
+import { CreateOrg } from '@/widgets/CreateOrg'
+import { Toaster } from '@/common/components/Toast'
+import { useMenusQuery } from '@/reactQuery/queryMenu'
+import { useOrganizationQuery } from '@/reactQuery/queryOrg'
 
 function App() {
+  // params.
+  const { code } = useParams<{ code?: string }>();
+  const navigate = useNavigate();
+
   // state.
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // query.
+  const { data: organization, isError } = useOrganizationQuery(code);
+
+  useEffect(() => {
+    if (isError) {
+      navigate('/');
+    }
+  }, [isError, navigate]);
+  const { data: restaurants } = useMenusQuery(organization?.id);
+
+  // store.
   const editMode = useCustomStore((state) => state.editMode);
-  const restaurants = useCustomStore((state) => state.restaurants);
   const categoryFilters = useCustomStore((state) => state.categoryFilters);
   const mealTicketFilters = useCustomStore((state) => state.mealTicketFilters);
 
   // 필터링된 식당 목록
   const filteredRestaurants = useMemo(() => {
-    return restaurants.filter(restaurant =>
+    return (restaurants ?? []).filter(restaurant =>
       categoryFilters[restaurant.category] && mealTicketFilters[restaurant.mealTicket]
     );
   }, [restaurants, categoryFilters, mealTicketFilters]);
 
   return (
-    <ScrollArea className='h-screen w-full'>
+    <>
+      <Toaster position="top-center" />
+      <ScrollArea className='h-screen w-full'>
       <div className="flex flex-col items-center gap-3 py-8 font-pretendard px-[20px]">
-        <h1 className="text-4xl font-bold mb-4 flex items-center gap-3">
+        <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
           <img src="/Menu-Lottery/favicon.ico" alt="icon" className="w-8 h-8" />
-          메뉴 추첨기
+          {organization ? `${organization.code}의 메뉴 추첨기` : '메뉴 추첨기'}
           <img src="/Menu-Lottery/favicon.ico" alt="icon" className="w-8 h-8" />
         </h1>
 
-        <FilterContent />
+        {!code && <CreateOrg />}
+
+        <FilterContent restaurants={(restaurants ?? [])}/>
 
         <RestaurantList
           restaurants={filteredRestaurants}
@@ -64,7 +86,8 @@ function App() {
           </Dialog>
         )}
       </div>
-    </ScrollArea>
+      </ScrollArea>
+    </>
   )
 }
 

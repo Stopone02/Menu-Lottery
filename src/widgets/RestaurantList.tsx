@@ -3,8 +3,8 @@ import { Tickets } from 'lucide-react';
 import { CATEGORY_LABELS } from '@/common/const';
 import type { Restaurant } from '@/common/types/Restaurant';
 import useCustomStore from '@/zustand/store';
-import { ScrollArea } from '@/components/ScrollArea';
-import { Button } from '@/components/Button';
+import { ScrollArea } from '@/common/components/ScrollArea';
+import { Button } from '@/common/components/Button';
 import { cn } from '@/common/util';
 
 interface RestaurantListProps {
@@ -16,7 +16,6 @@ export default function RestaurantList({ restaurants }: RestaurantListProps) {
   const editMode = useCustomStore((state) => state.editMode);
   
   // set method.
-  const removeRestaurant = useCustomStore((state) => state.removeRestaurant);
   const toggleEditMode = useCustomStore((state) => state.toggleEditMode);
 
   return (
@@ -50,7 +49,7 @@ export default function RestaurantList({ restaurants }: RestaurantListProps) {
                 <Button
                   variant="destructive"
                   className="p-2 w-6 h-6 flex items-center justify-center text-white border-none rounded cursor-pointer font-bold flex-shrink-0"
-                  onClick={() => removeRestaurant(restaurant.id)}
+                  // onClick={() => removeRestaurant(restaurant.id)}
                   aria-label="삭제"
                 >
                   ✕

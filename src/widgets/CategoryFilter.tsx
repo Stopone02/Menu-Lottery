@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 
 import useCustomStore from '@/zustand/store';
-import { Checkbox } from '@/components/Checkbox';
-import { Label } from '@/components/Label';
+import { Checkbox } from '@/common/components/Checkbox';
+import { Label } from '@/common/components/Label';
 import { CATEGORY_LABELS } from '@/common/const';
+import type { Restaurant } from '@/common/types/Restaurant';
 
-export default function CategoryFilter() {
+export default function CategoryFilter({ restaurants }: { restaurants: Restaurant[] }) {
   // state.
-  const restaurants = useCustomStore((state) => state.restaurants);
   const filters = useCustomStore((state) => state.categoryFilters);
 
   // set method.

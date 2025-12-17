@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import type { CategoryFilterType, MealticketFilterType } from '@/common/types/Restaurant';
 import { CATEGORY_FILTER_TYPE, MEALTICKT_FILTER_TYPE } from '@/common/const';
-import useCustomStore from '../zustand/store';
-import { Button } from '@/components/Button';
+import { Button } from '@/common/components/Button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/Selector';
-import { Input } from '@/components/Input';
+} from '@/common/components/Selector';
+import { Input } from '@/common/components/Input';
 
 export default function RestaurantForm() {
   const [name, setName] = useState('');
@@ -18,12 +17,12 @@ export default function RestaurantForm() {
   const [mealTicket, setMealTicket] = useState<MealticketFilterType>('AVAILABLE');
 
   // set method.
-  const addRestaurant = useCustomStore((state) => state.addRestaurant);
+  // const addRestaurant = useCustomStore((state) => state.addRestaurant);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      addRestaurant({ name: name.trim(), category, mealTicket });
+      // addRestaurant({ name: name.trim(), category, mealTicket });
       setName('');
       setCategory('KO');
       setMealTicket('AVAILABLE');

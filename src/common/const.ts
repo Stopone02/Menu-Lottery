@@ -16,3 +16,11 @@ export const CATEGORY_LABELS: Record<typeof CATEGORY_FILTER_TYPE[keyof typeof CA
   CH: '중식',
   ETC: 'ETC'
 } as const;
+
+export const BASE_URL = `${import.meta.env.VITE_SERVER_ADDRESS}/api`;
+
+export const API = {
+  ORGANIZATION: '/organization',
+  ORGANIZATION_BY_CODE: (code: string) => `/organization/${code}`,
+  MENUS: (code: string) => `/menu/${code}/menus`,
+} as const;

@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 import type { Restaurant } from '@/common/types/Restaurant';
 import { CATEGORY_LABELS } from '@/common/const';
 import { cn } from '@/common/util';
-import { Button } from '@/components/Button';
+import { Button } from '@/common/components/Button';
 
 interface RandomPickerProps {
   restaurants: Restaurant[];

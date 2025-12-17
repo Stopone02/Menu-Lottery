@@ -1,18 +1,19 @@
 import { useMemo } from 'react';
 
 import useCustomStore from '@/zustand/store';
-import { Checkbox } from '@/components/Checkbox';
-import { Label } from '@/components/Label';
+import { Checkbox } from '@/common/components/Checkbox';
+import { Label } from '@/common/components/Label';
+import type { Restaurant } from '@/common/types/Restaurant';
 
-export default function MealTicketFilter() {
+export default function MealTicketFilter({ restaurants }: { restaurants: Restaurant[] }) {
   // state.
-  const restaurants = useCustomStore((state) => state.restaurants);
   const filters = useCustomStore((state) => state.mealTicketFilters);
 
   // set method.
   const setFilters = useCustomStore((state) => state.setMealTicketFilter);
 
   const mealTickets = useMemo(() => {
+    console.log(restaurants)
       const uniqueMealTickets = new Set(restaurants.map(r => r.mealTicket));
       return Array.from(uniqueMealTickets);
     }, [restaurants]);

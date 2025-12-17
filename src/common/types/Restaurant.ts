@@ -13,8 +13,11 @@ export type MealTicketFilterOption = {
 };
 
 export interface Restaurant {
-  id: number;
+  id: string;
+  orgId: string;
   name: string;
   mealTicket: MealticketFilterType;
   category: CategoryFilterType;
+  createdAt: Date;
+  updatedAt: Date;
 }
