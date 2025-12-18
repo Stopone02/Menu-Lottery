@@ -108,6 +108,7 @@ function App() {
         <FilterContent restaurants={(restaurants ?? [])}/>
 
         <RestaurantList
+          orgId={organization && organization.id}
           restaurants={filteredRestaurants}
         />
 
