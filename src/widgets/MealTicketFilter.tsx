@@ -13,7 +13,6 @@ export default function MealTicketFilter({ restaurants }: { restaurants: Restaur
   const setFilters = useCustomStore((state) => state.setMealTicketFilter);
 
   const mealTickets = useMemo(() => {
-    console.log(restaurants)
       const uniqueMealTickets = new Set(restaurants.map(r => r.mealTicket));
       return Array.from(uniqueMealTickets);
     }, [restaurants]);
