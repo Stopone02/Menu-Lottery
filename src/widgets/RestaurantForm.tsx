@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
 import type { CategoryFilterType, MealticketFilterType } from '@/common/types/Restaurant';
-import { CATEGORY_FILTER_TYPE, MEALTICKT_FILTER_TYPE } from '@/common/const';
+import { CATEGORY_FILTER_TYPE, CATEGORY_LABELS, MEALTICKT_FILTER_TYPE } from '@/common/const';
 import { Button } from '@/common/components/Button';
 import {
   Select,
@@ -10,24 +12,47 @@ import {
   SelectValue,
 } from '@/common/components/Selector';
 import { Input } from '@/common/components/Input';
+import { useCreateMenuMutation } from '@/reactQuery/queryMenu';
 
-export default function RestaurantForm() {
+
+interface RestaurantFormProps {
+  orgId: string;
+}
+
+export default function RestaurantForm({ orgId }: RestaurantFormProps) {
+  // state.
   const [name, setName] = useState('');
   const [category, setCategory] = useState<CategoryFilterType>('KO');
   const [mealTicket, setMealTicket] = useState<MealticketFilterType>('AVAILABLE');
 
-  // set method.
-  // const addRestaurant = useCustomStore((state) => state.addRestaurant);
+  // query.
+  const { mutate: createMenu, isError, isSuccess } = useCreateMenuMutation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      // addRestaurant({ name: name.trim(), category, mealTicket });
+      createMenu({
+        orgId,
+        name: name.trim(),
+        mealTicket: mealTicket === 'AVAILABLE',
+        category,
+      });
       setName('');
       setCategory('KO');
       setMealTicket('AVAILABLE');
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('메뉴가 추가되었습니다.');
+      return;
+    }
+    if (isError) {
+      toast.error('메뉴 추가에 실패했습니다.');
+      return;
+    }
+  }, [isSuccess, isError]);
 
   return (
     <div className="w-full max-w-[600px] p-6 border-2 border-indigo-500 rounded-lg bg-emerald-500/10 mb-4 bg-gray-50">
@@ -59,7 +84,7 @@ export default function RestaurantForm() {
             <SelectContent position="popper">
               {Object.values(CATEGORY_FILTER_TYPE).map((cat) => (
                 <SelectItem key={cat} value={cat}>
-                  {cat}
+                  {CATEGORY_LABELS[cat]}
                 </SelectItem>
               ))}
             </SelectContent>

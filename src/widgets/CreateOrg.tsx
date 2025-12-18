@@ -4,8 +4,11 @@ import { toast } from "sonner";
 import { Button } from "@/common/components/Button";
 import { Input } from "@/common/components/Input";
 import { useOrganizationMutation } from "@/reactQuery/queryOrg";
+import { useNavigate } from "react-router-dom";
 
 export function CreateOrg() {
+  const navigate = useNavigate();
+
   // state.
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [identificationCode, setIdentificationCode] = useState('');
@@ -25,13 +28,14 @@ export function CreateOrg() {
   useEffect(() => {
     if (isSuccess) {
       toast.success('조직 코드가 추가되었습니다.');
+      navigate(`/${identificationCode.trim()}`);
       return;
     }
     if (isError) {
       toast.error('조직 코드 추가에 실패했습니다.');
       return;
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, identificationCode, isError, navigate]);
 
   return (
     !showCodeInput ? (
@@ -45,7 +49,7 @@ export function CreateOrg() {
     ) : (
       <div className="flex gap-2">
         <Input
-          placeholder="ex) NAVER_1"
+          placeholder="ex) NAVER"
           value={identificationCode}
           onChange={(e) => {
             const value = e.target.value.replace(/[^a-zA-Z]/g, '');

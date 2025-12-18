@@ -7,7 +7,9 @@ import RestaurantForm from '@/widgets/RestaurantForm'
 import { ScrollArea } from '@/common/components/ScrollArea'
 import { FilterContent } from '@/widgets/FilterContent'
 import useCustomStore from '@/zustand/store'
-import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogHeader } from '@/common/components/Dialog'
+import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/common/components/Dialog'
+import { toast } from 'sonner'
+import { Share2, Copy, Check } from 'lucide-react'
 import { Button } from '@/common/components/Button'
 import { CreateOrg } from '@/widgets/CreateOrg'
 import { Toaster } from '@/common/components/Toast'
@@ -15,21 +17,35 @@ import { useMenusQuery } from '@/reactQuery/queryMenu'
 import { useOrganizationQuery } from '@/reactQuery/queryOrg'
 
 function App() {
-  // params.
-  const { code } = useParams<{ code?: string }>();
   const navigate = useNavigate();
+
+  // params.
+  const { code: codeParam } = useParams<{ code?: string }>();
+  const code = codeParam;
 
   // state.
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const currentUrl = window.location.href;
+
+  const handleCopyUrl = async () => {
+    await navigator.clipboard.writeText(currentUrl);
+    setIsCopied(true);
+    toast.success('링크가 복사되었습니다!');
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   // query.
-  const { data: organization, isError } = useOrganizationQuery(code);
+  const { data: organization, isError } = useOrganizationQuery(code ?? 'DEFAULT');
 
   useEffect(() => {
     if (isError) {
       navigate('/');
     }
   }, [isError, navigate]);
+
   const { data: restaurants } = useMenusQuery(organization?.id);
 
   // store.
@@ -49,13 +65,45 @@ function App() {
       <Toaster position="top-center" />
       <ScrollArea className='h-screen w-full'>
       <div className="flex flex-col items-center gap-3 py-8 font-pretendard px-[20px]">
-        <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
+        <h1 className="text-4xl font-bold mb-1 flex items-center gap-3">
           <img src="/Menu-Lottery/favicon.ico" alt="icon" className="w-8 h-8" />
-          {organization ? `${organization.code}의 메뉴 추첨기` : '메뉴 추첨기'}
+          {organization ? `${organization.code.length > 7 ? 'organization.code'.slice(0, 7) + '...' : 'DEFAULT' === organization.code ? '메뉴 추첨기' : organization.code }` : '메뉴 추첨기'}
           <img src="/Menu-Lottery/favicon.ico" alt="icon" className="w-8 h-8" />
         </h1>
 
-        {!code && <CreateOrg />}
+        <Dialog open={isShareDialogOpen} onOpenChange={setIsShareDialogOpen}>
+          <DialogTrigger asChild className='max-w-[600px] w-full '>
+            <Button className="bg-transparent justify-end flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 hover:bg-transparent">
+              <Share2 className="w-4 h-4" />
+              <span>공유하기</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>링크 공유</DialogTitle>
+              <DialogDescription>
+                우리들만의 메뉴 추첨기를 공유하세요!
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex items-center gap-2 mt-4">
+              <input
+                type="text"
+                readOnly
+                value={currentUrl}
+                className="flex-1 px-3 py-2 text-sm border rounded-md bg-gray-50 text-gray-700"
+              />
+              <Button
+                onClick={handleCopyUrl}
+                className="px-3"
+                variant="outline"
+              >
+                {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {'DEFAULT' === code && <CreateOrg />}
 
         <FilterContent restaurants={(restaurants ?? [])}/>
 
@@ -63,7 +111,7 @@ function App() {
           restaurants={filteredRestaurants}
         />
 
-        {editMode && (<RestaurantForm />)}
+        {editMode && organization && (<RestaurantForm orgId={organization.id} />)}
 
         {!editMode && (
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
