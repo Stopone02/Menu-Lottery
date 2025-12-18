@@ -103,7 +103,7 @@ function App() {
           </DialogContent>
         </Dialog>
 
-        {'DEFAULT' === code && <CreateOrg />}
+        {!code && <CreateOrg />}
 
         <FilterContent restaurants={(restaurants ?? [])}/>
 
